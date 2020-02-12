@@ -33,7 +33,16 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.get('/:id/comments', (req, res) => {});
+router.get('/:id/comments', (req, res) => {
+    Posts.findPostComments(req.params.id)
+    .then(comment => {
+        !comment ? res.status(500).json({ message: "The post with the specified ID does not exist." }) : res.status(200).json(comment);
+    })
+    .catch(error => {
+        console.log(error);
+        res.status(500).json({ error: "There was an error while saving the comment to the database" })
+    })
+});
 
 //!POST requests
 router.post("/", (req, res) => {
